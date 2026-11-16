@@ -123,11 +123,10 @@
       align-items: center;
       cursor: pointer;
     }
-    .review-student-name {
-      font-size: 0.95rem;
+    .review-student-info {
+      font-size: 0.9rem;
       color: #0077b6;
       font-weight: bold;
-      white-space: nowrap;
     }
     .review-topic-title { 
       color: #555555; 
@@ -370,6 +369,14 @@
         <h3>✏️ 2027年度 研修旅行の感想を投稿する</h3>
         <form id="studentReviewForm" onsubmit="addReview(event)">
           <div class="form-group">
+            <label for="inputClass">クラス名（例：IT科1年A組）</label>
+            <input type="text" id="inputClass" required placeholder="クラス名を入力してください">
+          </div>
+          <div class="form-group">
+            <label for="inputStudentId">学籍番号（例：27001）</label>
+            <input type="text" id="inputStudentId" required placeholder="学籍番号を入力してください">
+          </div>
+          <div class="form-group">
             <label for="inputName">お名前（例：ヴィハラ）</label>
             <input type="text" id="inputName" required placeholder="お名前を入力してください">
           </div>
@@ -393,7 +400,7 @@
         <!-- 2024 Default Items -->
         <article class="review-card" onclick="openModal('images/2024 students/vihara.webp', 'ヴィハラさんの感想 (クルーズから見る富士山)', 'クルーズから見る富士山がとてもきれいで、忘れられない思い出になりました。')">
           <div class="review-card-body">
-            <span class="review-student-name">💬 ヴィハラさん</span>
+            <span class="review-student-info">💬 ヴィハラさん</span>
             <span class="review-topic-title">クルーズから見る富士山</span>
           </div>
           <img src="images/2024 students/vihara.webp" alt="富士山とクルーズ" class="review-card-img">
@@ -401,7 +408,7 @@
 
         <article class="review-card" onclick="openModal('images/2024 students/afuka.webp', 'アフカさんの感想 (おいしいランチ)', '友達と一緒においしいランチを食べたり、写真を撮ったりできて楽しかったです。')">
           <div class="review-card-body">
-            <span class="review-student-name">💬 アフカさん</span>
+            <span class="review-student-info">💬 アフカさん</span>
             <span class="review-topic-title">おいしいランチと写真撮影</span>
           </div>
           <img src="images/2024 students/afuka.webp" alt="ランチ" class="review-card-img">
@@ -409,7 +416,7 @@
 
         <article class="review-card" onclick="openModal('images/2024 students/karki.webp', 'カルキさんの感想 (歴史や文化の見学)', '三保の松原と久能山東照宮を見学して、日本の歴史や文化を学ぶことができました。')">
           <div class="review-card-body">
-            <span class="review-student-name">💬 カルキさん</span>
+            <span class="review-student-info">💬 カルキさん</span>
             <span class="review-topic-title">三保の松原と久能山東照宮の見学</span>
           </div>
           <img src="images/2024 students/karki.webp" alt="三保の松原" class="review-card-img">
@@ -417,7 +424,7 @@
 
         <article class="review-card" onclick="openModal('images/2024 students/sharma.webp', 'シャルマさんの感想 (バスの中の雰囲気)', 'バスの中の雰囲気も良く、クラスメイトみんなと仲良くなれる最高の行事でした。')">
           <div class="review-card-body">
-            <span class="review-student-name">💬 シャルマさん</span>
+            <span class="review-student-info">💬 シャルマさん</span>
             <span class="review-topic-title">バスの中の雰囲気とクラスメイト</span>
           </div>
           <img src="images/2024 students/sharma.webp" alt="久能山東照宮" class="review-card-img">
@@ -464,9 +471,7 @@
         { photo: "images/2026 students/gc.webp", title: "研修旅行の感想", name: "G.C.さん", comment: "美しい景色と歴史ある場所の両方を楽しめて、思い出に残る研修旅行になりました。" },
         { photo: "images/2026 students/dan.webp", title: "最高の景色と思い出", name: "ダンさん", comment: "天気に恵まれて最高の景色でした！友達と最高の思い出が作れて大満足です。" }
       ],
-      "2027": [
-        // 2027年はユーザーが投稿したデータがここに入ります
-      ]
+      "2027": []
     };
 
     const yearSelect = document.getElementById('review-year-select');
@@ -495,11 +500,11 @@
 
       reviewList.innerHTML = data.map((review, index) => `
         <article class="review-card">
-          <div class="review-card-body" onclick="openModal('${review.photo}', '${review.name}の感想 (${review.title})', '${review.comment}')">
-            <span class="review-student-name">💬 ${review.name}</span>
+          <div class="review-card-body" onclick="openModal('${review.photo}', '${review.className ? review.className + ' ' : ''}${review.studentId ? '(' + review.studentId + ') ' : ''}${review.name}の感想 (${review.title})', '${review.comment}')">
+            <span class="review-student-info">💬 ${review.className ? '[' + review.className + '] ' : ''}${review.name}</span>
             <span class="review-topic-title">${review.title}</span>
           </div>
-          <img src="${review.photo}" alt="${review.title}" class="review-card-img" onclick="openModal('${review.photo}', '${review.name}の感想 (${review.title})', '${review.comment}')">
+          <img src="${review.photo}" alt="${review.title}" class="review-card-img" onclick="openModal('${review.photo}', '${review.className ? review.className + ' ' : ''}${review.studentId ? '(' + review.studentId + ') ' : ''}${review.name}の感想 (${review.title})', '${review.comment}')">
           
           ${year === "2027" ? `<button class="delete-btn" onclick="deleteReview(${index})" title="この投稿を削除">×</button>` : ''}
         </article>
@@ -509,8 +514,8 @@
     // Xóa bài đăng ở năm 2027
     function deleteReview(index) {
       if (confirm("この投稿を削除しますか？")) {
-        reviewData["2027"].splice(index, 1); // Xóa phần tử tại vị trí index
-        renderReviews("2027"); // Vẽ lại danh sách
+        reviewData["2027"].splice(index, 1);
+        renderReviews("2027");
       }
     }
 
@@ -518,6 +523,8 @@
     function addReview(event) {
       event.preventDefault(); // ページのリロードを防ぐ
 
+      const className = document.getElementById('inputClass').value;
+      const studentId = document.getElementById('inputStudentId').value;
       const name = document.getElementById('inputName').value;
       const title = document.getElementById('inputTitle').value;
       const comment = document.getElementById('inputComment').value;
@@ -526,10 +533,12 @@
       if (photoInput.files && photoInput.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          const photoUrl = e.target.result; // 読み込んだ画像をBase64形式のURLにする
+          const photoUrl = e.target.result;
 
           // 2027年のデータ配列の先頭に追加
           reviewData["2027"].unshift({
+            className: className,
+            studentId: studentId,
             photo: photoUrl,
             title: title,
             name: name + "さん",
